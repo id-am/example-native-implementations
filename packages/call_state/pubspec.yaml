@@ -1,0 +1,27 @@
+name: call_state
+description: Flutter plugin to check if the user is on an active phone call and observe call state changes.
+version: 0.1.0
+publish_to: none
+
+environment:
+  sdk: ">=3.4.0 <4.0.0"
+  flutter: ">=3.22.0"
+
+dependencies:
+  flutter:
+    sdk: flutter
+  permission_handler: ^13.0.2
+
+dev_dependencies:
+  flutter_test:
+    sdk: flutter
+  flutter_lints: ^4.0.0
+
+flutter:
+  plugin:
+    platforms:
+      android:
+        package: com.example.call_state
+        pluginClass: CallStatePlugin
+      ios:
+        pluginClass: CallStatePlugin
