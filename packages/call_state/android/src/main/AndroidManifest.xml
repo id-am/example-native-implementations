@@ -1,3 +1,4 @@
+<!-- Se declara el permiso para leer el estado del teléfono del dispositivo Android -->
 <manifest xmlns:android="http://schemas.android.com/apk/res/android">
     <uses-permission android:name="android.permission.READ_PHONE_STATE" />
 </manifest>
