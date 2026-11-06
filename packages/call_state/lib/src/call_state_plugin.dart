@@ -68,8 +68,11 @@ class CallState {
   /// Flujo con el estado de la llamada. Emite el estado actual al suscribirse y
   /// cada cambio posterior. El listener nativo vive mientras haya una
   /// suscripción.
+  /// 
+  /// El async* permite emitir múltiples valores a lo largo del tiempo.
   Stream<CallStatus> get onCallStatusChanged async* {
     await _ensurePermission();
+    // El yield* permite delegar la emisión de valores a otro stream, en este caso el stream del EventChannel.
     yield* eventChannel
         .receiveBroadcastStream()
         .map(CallStatus.fromNative)
