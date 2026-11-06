@@ -1,18 +1,18 @@
-/// Status of the phone call as reported by the native platform.
+/// Estado de la llamada según lo reportado por la plataforma nativa.
 enum CallStatus {
-  /// No call in progress.
+  /// No hay llamada en curso.
   idle,
 
-  /// An incoming call is ringing.
+  /// Una llamada entrante está sonando.
   ringing,
 
-  /// A call is active (connected, dialing or on hold).
+  /// Una llamada está activa (conectada, marcando o en espera).
   active;
 
-  /// `true` when the user is in an ongoing call (not merely ringing).
+  /// `true` cuando el usuario está en una llamada en curso (no solo sonando).
   bool get isInCall => this == CallStatus.active;
 
-  /// Parses the value sent by the native side. Unknown values map to [idle].
+  /// Parsea el valor enviado por la plataforma nativa. Valores desconocidos se mapean a [idle].
   static CallStatus fromNative(Object? value) {
     switch (value) {
       case 'ringing':

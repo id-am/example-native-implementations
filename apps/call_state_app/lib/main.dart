@@ -26,7 +26,7 @@ class HomePage extends StatefulWidget {
 class _HomePageState extends State<HomePage> {
   CallStatus? _status;
   String? _error;
-  StreamSubscription<CallStatus>? _sub;
+  StreamSubscription<CallStatus>? _subscription;
 
   Future<void> _check() async {
     try {
@@ -41,20 +41,20 @@ class _HomePageState extends State<HomePage> {
   }
 
   void _toggleSubscription() {
-    if (_sub != null) {
-      _sub!.cancel();
-      setState(() => _sub = null);
+    if (_subscription != null) {
+      _subscription!.cancel();
+      setState(() => _subscription = null);
       return;
     }
     setState(() {
-      _sub = CallState.instance.onCallStatusChanged.listen(
-        (s) => setState(() {
-          _status = s;
+      _subscription = CallState.instance.onCallStatusChanged.listen(
+        (callStatus) => setState(() {
+          _status = callStatus;
           _error = null;
         }),
         onError: (Object e) => setState(() {
           _error = e.toString();
-          _sub = null;
+          _subscription = null;
         }),
       );
     });
@@ -62,13 +62,13 @@ class _HomePageState extends State<HomePage> {
 
   @override
   void dispose() {
-    _sub?.cancel();
+    _subscription?.cancel();
     super.dispose();
   }
 
   @override
   Widget build(BuildContext context) {
-    final listening = _sub != null;
+    final listening = _subscription != null;
     return Scaffold(
       appBar: AppBar(title: const Text('Call State')),
       body: Center(

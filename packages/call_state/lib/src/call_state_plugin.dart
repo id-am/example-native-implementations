@@ -8,10 +8,10 @@ import 'package:permission_handler/permission_handler.dart';
 import 'call_state_exception.dart';
 import 'call_status.dart';
 
-/// Entry point of the plugin.
+/// Entrada del plugin.
 ///
-/// On Android the `READ_PHONE_STATE` runtime permission is required; it is
-/// handled with `permission_handler`. On iOS no permission is needed.
+/// En Android se requiere el permiso en tiempo de ejecución `READ_PHONE_STATE`; se
+/// maneja con `permission_handler`. En iOS no se necesita permiso.
 class CallState {
   CallState._();
 
@@ -26,35 +26,35 @@ class CallState {
 
   bool get _needsPermission => !kIsWeb && Platform.isAndroid;
 
-  /// Whether the phone permission is currently granted (always true on iOS).
+  /// Indica si el permiso de teléfono está actualmente concedido (siempre true en iOS).
   Future<bool> hasPermission() async {
     if (!_needsPermission) return true;
     return Permission.phone.status.isGranted;
   }
 
-  /// Requests the phone permission if needed. Returns `true` when granted.
+  /// Solicita el permiso de teléfono si es necesario. Devuelve `true` cuando se concede.
   Future<bool> requestPermission() async {
     if (!_needsPermission) return true;
     return (await Permission.phone.request()).isGranted;
   }
 
-  /// Whether the permission was permanently denied and the user must open
-  /// the app settings (see [openSettings]).
+  /// Indica si el permiso fue denegado permanentemente y el usuario debe abrir
+  /// la página de configuración de la app (ver [openSettings]).
   Future<bool> isPermissionPermanentlyDenied() async {
     if (!_needsPermission) return false;
     return Permission.phone.status.isPermanentlyDenied;
   }
 
-  /// Opens the app settings page.
+  /// Abre la página de configuración de la app.
   Future<bool> openSettings() => openAppSettings();
 
-  /// Returns `true` if the user is in an active call.
+  /// Devuelve `true` si el usuario está en una llamada activa.
   ///
-  /// Requests the permission on Android when not yet granted and throws
-  /// [CallStateException] with code `permission_denied` if refused.
+  /// Solicita el permiso en Android cuando aún no ha sido concedido y lanza
+  /// [CallStateException] con el código `permission_denied` si se rechaza.
   Future<bool> isInCall() async => (await getCallStatus()).isInCall;
 
-  /// Returns the current [CallStatus].
+  /// Devuelve el [CallStatus] actual.
   Future<CallStatus> getCallStatus() async {
     await _ensurePermission();
     try {
@@ -65,9 +65,9 @@ class CallState {
     }
   }
 
-  /// Stream with the call status. Emits the current status on subscribe and
-  /// every later change. The native listener lives while there is a
-  /// subscription.
+  /// Flujo con el estado de la llamada. Emite el estado actual al suscribirse y
+  /// cada cambio posterior. El listener nativo vive mientras haya una
+  /// suscripción.
   Stream<CallStatus> get onCallStatusChanged async* {
     await _ensurePermission();
     yield* eventChannel
@@ -81,6 +81,7 @@ class CallState {
     });
   }
 
+  /// Lanza [CallStateException] si el permiso es necesario y no ha sido concedido.
   Future<void> _ensurePermission() async {
     if (await hasPermission()) return;
     if (!await requestPermission()) {
